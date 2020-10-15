@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# My Additions
+.gitignore
+
 # Distribution / packaging
 .Python
 build/
