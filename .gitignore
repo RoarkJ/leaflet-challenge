@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # My Additions
-.gitignore
+config.js
 
 # Distribution / packaging
 .Python
