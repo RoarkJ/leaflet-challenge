@@ -109,3 +109,11 @@ var earthquake = new L.LayerGroup();
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+
+  var legend = L.control({position: "bottomright"});
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "color legend");
+    var depth = ["-10-10", "10-30", "30-50", "50-70", "70-90", "90+"];
+    var colors = ["#009900", "#99ff66", "#e6b800", "#ffa366", "#ff6600", "#ff0000" ]
+  }
+  
