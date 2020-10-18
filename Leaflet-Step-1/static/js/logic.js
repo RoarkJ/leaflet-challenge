@@ -4,29 +4,67 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
   // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
-  createFeatures(data.features);
-});
+  // createFeatures(data.features);
+ // });
 
-function createFeatures(earthquakeData) {
+function circleMarkers(feature) {
+
+  function circleColor(depth) {
+    var depth = feature.geometry.coordinates[2];
+    if (depth >= 90)
+      return "#ff0000";
+    else if (depth >= 70)
+      return "#ff6600"
+    else if (depth >= 50)
+      return "#ffa366"
+    else if (depth >= 30)
+      return "#e6b800"
+    else if (depth >= 10)
+      return "#99ff66"
+    else
+      return "#009900"
+  };
+  function circleSize(radius) {
+    var radius = feature.properties.mag;
+      return radius/0.4
+  };
+  return {radius: circleSize(feature),
+     fillColor: circleColor(feature),
+    weight: 1, color: "black", 
+      opacity: .9};
+
+};
+
+
+
+// function createFeatures(earthquakeData) {
 
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+      "</h3><hr><p>" + new Date(feature.properties.time) + 'Magnitude'+ feature.properties.mag + "</p>");
   }
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature
-  });
+  var earthquakes = L.geoJSON(data, {
+    pointToLayer: function(feature, latlong){
+      return L.circleMarkers(latlong, circleMarkers(feature));
+    },
+    onEachFeature: onEachFeature,
+    radius: data
+  }).addTo(earthquakes)
+  earthquakes.addTo(myMap);
+  }
+  );
+
 
   // Sending our earthquakes layer to the createMap function
-  createMap(earthquakes);
-}
+  //createMap(earthquakes);
+//}
 
-function createMap(earthquakes) {
+// function createMap(earfunthquakes) {
 
   // Define streetmap and darkmap layers
   var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -50,7 +88,7 @@ function createMap(earthquakes) {
     "Street Map": streetmap,
     "Dark Map": darkmap
   };
-
+var earthquake = new L.LayerGroup();
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
     Earthquakes: earthquakes
@@ -71,4 +109,3 @@ function createMap(earthquakes) {
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
-}
