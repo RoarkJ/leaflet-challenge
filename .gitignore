@@ -8,6 +8,7 @@ __pycache__/
 
 # My Additions
 config.js
+.DS_Store
 
 # Distribution / packaging
 .Python
