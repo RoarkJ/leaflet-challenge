@@ -30,9 +30,9 @@ var myMap = L.map("mapid", {
     40.7, -94.5
   ],
   zoom: 3,
- layers: [outdoors, satelite_map, greyscale ]
 });
 greyscale.addTo(myMap);
+
 //Base Map
 var baseMaps = {
     Greyscale: greyscale,
@@ -42,7 +42,7 @@ var baseMaps = {
 // Overlays Maps
 var earthquakes = new L.LayerGroup();
 var overlays = {
-   // "Techtonic Plates": techtonicplates,
+   // "Techtonic Plates": techtonicplates, ( not adding to assignment)
     "Earthquakes": earthquakes
 };
 //Add Control Layer
